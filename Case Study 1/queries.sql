@@ -40,12 +40,12 @@ on m.product_id = s.product_id
 where order_date = '2021-01-01'
 order by customer_id;
  
-|customer_id | product_id |product_name|   order_date  |
+|customer_id   | product_id |product_name  |   order_date  |
 | A	         |     1	    |   "sushi"	 |  "2021-01-01" |
 | A	         |     2	    |   "curry"	 |  "2021-01-01" |
 | B	         |     2	    |   "curry"	 |  "2021-01-01" |
 | C	         |     3	    |   "ramen"	 |  "2021-01-01" |
-| C	         |     3	    |    "ramen" |  "2021-01-01" |
+| C	         |     3	    |    "ramen"   |  "2021-01-01" |
 
 Query 4
 
