@@ -66,9 +66,43 @@ limit 1;
 Query 5
 -- 5. Which item was the most popular for each customer?
 
-select count(*), s.customer_id, product_name
+
+Query 6
+-- 6. Which item was purchased first by the customer after they became a member?
+
+With ctediners AS (
+select s.*, 
+dense_rank() over(partition by customer_id order by order_date) as rn
 from sales as s
-inner join menu as me
-on me.product_id = s.product_id
-group by product_name,customer_id
-order by count(*) desc
+	)
+select d.* 
+from ctediners as d
+inner join members as me
+on d.customer_id = me.customer_id
+where order_date >= join_date AND product_id < 3
+
+|customer_id   | product_id |rn      |   order_date  |
+| A	         |     2	    |  2     |  "2021-01-07" |
+| B	         |     1	    |   4	 |  "2021-01-11" |
+
+Query 7
+-- 7. Which item was purchased just before the customer became a member?
+
+With ctediners AS (
+select s.*, 
+dense_rank() over(partition by customer_id order by order_date desc) as rn
+from sales as s
+	)
+select d.* 
+from ctediners as d
+inner join members as me
+on d.customer_id = me.customer_id
+where order_date < join_date and rn = 4
+
+|customer_id   | product_id |  rn    |   order_date  |
+| A	         |     2	    |  4     |  "2021-01-01" |
+| A	         |     1	    |  4	    |  "2021-01-01" |
+| B            |     1      |  4     |  "2021-01-04" |
+
+Query 8
+8. What is the total items and amount spent for each member before they became a member?
