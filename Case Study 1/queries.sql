@@ -65,9 +65,32 @@ limit 1;
 
 Query 5
 -- 5. Which item was the most popular for each customer?
+with ctediners as 
+	(select s.customer_id, s.product_id, count(*) as num,
+	dense_rank() over(partition by customer_id order by product_id) as rn
+	from sales as s
+	group by s.customer_id, s.product_id
+	)
+select d.customer_id,me.product_name, num
+from ctediners as d
+inner join menu as me
+on d.product_id = me.product_id
+order by num desc, customer_id desc
+limit = 5
+
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | ramen        |
+| B           | sushi        |
+| B           | curry        |
+| B           | ramen        |
+| C           | ramen        |
 
 
-Query 6
+-------
+
+
+##Query 6
 -- 6. Which item was purchased first by the customer after they became a member?
 
 With ctediners AS (
