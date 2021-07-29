@@ -159,3 +159,8 @@ on d.product_id = me.product_id
 group by d.customer_id
 order by customer_id
 
+| customer_id | sum   | count |
+| ----------- | ----- | ----- |
+| B           |   3   | 40    |
+| A           |   2   | 25    |
+
