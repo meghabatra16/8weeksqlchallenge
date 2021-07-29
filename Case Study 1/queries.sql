@@ -188,10 +188,6 @@ group by d.customer_id
 | A           | 86     |
 
 
-#Query 10
-
--- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items,
--- not just sushi - how many points do customer A and B have at the end of January?
 
 
 
