@@ -141,3 +141,21 @@ where order_date < join_date and rn = 4
 ##Query 8
 
 8. What is the total items and amount spent for each member before they became a member?
+
+with ctediners as 
+    ( 
+	  select s.customer_id, s.product_id,s.order_date ,
+	  dense_rank() over(partition by s.customer_id order by order_date ) as rn
+	  from sales as s
+	  inner join members as mem
+	  on s.customer_id = mem.customer_id
+		where s.order_date < mem.join_date
+	)
+	
+select d.customer_id, sum(price),count(d.rn)
+from ctediners as d
+inner join menu as me
+on d.product_id = me.product_id
+group by d.customer_id
+order by customer_id
+
