@@ -97,7 +97,7 @@ limit = 5
 
 ---------
 
-##Query 6
+Query 6
 -- 6. Which item was purchased first by the customer after they became a member?
 
 With ctediners AS (
@@ -117,7 +117,7 @@ where order_date >= join_date AND product_id < 3
 
 --------
 
-##Query 7
+Query 7
 -- 7. Which item was purchased just before the customer became a member?
 
 With ctediners AS (
@@ -136,11 +136,11 @@ where order_date < join_date and rn = 4
 | A	       |     1	    |  4     |  "2021-01-01" |
 | B            |     1      |  4     |  "2021-01-04" |
 
---------
 
-##Query 8
 
-8. What is the total items and amount spent for each member before they became a member?
+Query 8
+
+-- 8. What is the total items and amount spent for each member before they became a member?
 
 with ctediners as 
     ( 
@@ -159,8 +159,15 @@ on d.product_id = me.product_id
 group by d.customer_id
 order by customer_id
 
+
 | customer_id | sum   | count |
 | ----------- | ----- | ----- |
 | B           |   3   | 40    |
 | A           |   2   | 25    |
+
+
+
+## Query 9
+-- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+
 
