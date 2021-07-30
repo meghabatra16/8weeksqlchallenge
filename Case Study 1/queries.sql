@@ -112,7 +112,7 @@ on d.customer_id = me.customer_id
 where order_date >= join_date AND product_id < 3
 
 |customer_id     | product_id       | rn     	 | order_date   |
-| A	         |     2	    |   2      	 | "2021-01-07  |  
+| A	         |     2	    |   2      	 | "2021-01-07" |  
 | B	         |     1	    |   4	 | "2021-01-11" |
 
 --------
@@ -186,7 +186,6 @@ group by d.customer_id
 | B           | 94     |
 | C           | 36     |
 | A           | 86     |
-
 
 
 
