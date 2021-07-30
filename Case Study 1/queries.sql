@@ -51,6 +51,8 @@ order by customer_id;
 | C	         |     3	    |   "ramen"	 |  "2021-01-01" |
 | C	         |     3	    |    "ramen" |  "2021-01-01" |
 
+
+
 --------
 
 #Query 4
