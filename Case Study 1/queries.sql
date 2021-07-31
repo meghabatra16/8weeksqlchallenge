@@ -112,7 +112,7 @@ on d.customer_id = me.customer_id
 where order_date >= join_date AND product_id < 3
 
 |customer_id     | product_id       | rn     	 | order_date   |
-| A	         |     2	    |   2      	 | "2021-01-07  |  
+| A	         |     2	    |   2      	 | "2021-01-07"  |  
 | B	         |     1	    |   4	 | "2021-01-11" |
 
 --------
@@ -188,6 +188,41 @@ group by d.customer_id
 | A           | 86     |
 
 
+## Query 10
+-- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, 
+-- not just sushi - how many points do customer A and B have at the end of January?
 
+    with ctediners AS (
+        SELECT
+            sales.customer_id,
+            sales.order_date,
+            members.join_date,
+            menu.product_name,
+            menu.price,
+            CASE WHEN sales.order_date >= members.join_date
+                  AND sales.order_date < members.join_date + 7 THEN 2*menu.price
+                 
+            ELSE menu.price END AS points
+        FROM sales 
+        LEFT JOIN menu
+            ON sales.product_id = menu.product_id
+        INNER JOIN members
+            ON sales.customer_id = members.customer_id
+    )
+    
+    SELECT
+        customer_id,
+        SUM(points)
+    FROM ctediner AS d
+    WHERE order_date <= '2021-01-31'
+    GROUP BY customer_id
+    ORDER BY customer_id;
+
+| customer_id | sum |
+| ----------- | --- |
+| A           | 127 |
+| B           | 72  |
+
+---
 
 
