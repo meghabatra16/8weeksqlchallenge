@@ -29,7 +29,7 @@ from customer_orders;
 --How many successful orders were delivered by each runner?
 select runner_id, count(*)
 from runner_orders
-where cancellation = 'null'
+where cancellation is null
 group by  runner_id;
 
 | runner_id | count |
@@ -53,7 +53,7 @@ select cte.pizza_name, cte.pizza_id, count(*)
 from ctepizza as cte
 inner join runner_orders as r
 on r.order_id = cte.order_id
-where cancellation = 'null'
+where cancellation is null
 group by pizza_id, pizza_name
 
 | pizza_id | pizza_name | count |
@@ -111,4 +111,33 @@ limit 2;
 -------
 
 #Query 7
+
 --For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+with ctediners as (
+select cu.*, r.cancellation
+from customer_orders as cu
+inner join runner_orders as r
+on cu.order_id = r.order_id
+)
+select cte.customer_id, 
+sum(case when exclusions is null and extras is null then 1 else 0 end ) as "No change",
+sum(case when exclusions is not null and extras is not null then 1 else 0 end ) as "Atleast 1 change"
+from ctediners as cte
+where cancellation is null
+group by customer_id
+order by customer_id;
+
+| customer_id | No Change  | Atleast 1 CHANGE  |
+------------------------------------------------
+| 101         | 2          | 0                 |
+| 102         | 3          | 0                 |
+| 103         | 0          | 3                 |
+| 104         | 1          | 2                 |
+| 105         | 0          | 1                 |
+
+-------
+
+#Query 8
+
+--How many pizzas were delivered that had both exclusions and extras?
+
