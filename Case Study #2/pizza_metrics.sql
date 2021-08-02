@@ -140,4 +140,18 @@ order by customer_id;
 #Query 8
 
 --How many pizzas were delivered that had both exclusions and extras?
+select count(*) as pizza_delivered  
+from customer_orders as cu
+inner join runner_orders as r
+on cu.order_id = r.order_id
+where extras is not null and exclusions is not null and cancellation is null
 
+| pizza_delivered |
+-------------------
+|  1              |
+
+-------
+
+#Query 9
+
+--What was the total volume of pizzas ordered for each hour of the day?
