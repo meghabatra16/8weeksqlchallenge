@@ -155,3 +155,33 @@ where extras is not null and exclusions is not null and cancellation is null
 #Query 9
 
 --What was the total volume of pizzas ordered for each hour of the day?
+select extract( hour from order_time ) as HOUR, count(*)
+from customer_orders
+group by HOUR
+order by HOUR
+
+| hour | count        |
+-----------------------
+| 11   | 1            |
+| 12   | 2            |
+| 13   | 3            |
+| 18   | 3            |
+| 19   | 1            |
+| 21   | 3            |
+| 23   | 1
+
+-------
+
+#Query 10
+--What was the volume of orders for each day of the week?
+select to_char( order_time, 'DAY' ) as DAY, count(*)
+from customer_orders
+group by DAY
+order by DAY
+
+| DAY       | Count        |
+----------------------------
+| FRIDAY    | 1            |
+| SATURDAY  | 5            |
+| THURSDAY  | 3            |
+| WEDNESDAY | 5            |
