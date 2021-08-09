@@ -20,3 +20,24 @@ group by W
 
 
 
+#Query 4
+--What was the average distance travelled for each customer?
+with ctediners as (
+select cu.customer_id, r.pickup_time, r.distance
+from runner_orders as r
+inner join customer_orders as cu
+on cu.order_id = r.order_id
+)
+select cte.customer_id, round(avg(cast(distance as decimal)),2)
+from ctediners as cte
+group by cte.customer_id
+order by cte.customer_id
+
+| customer_id | round |
+-----------------------
+| 101         | 20.00 |
+| 102         | 16.73 |
+| 103         | 23.40 |
+| 104         | 10.00 |
+| 105         | 25.00 |
+
