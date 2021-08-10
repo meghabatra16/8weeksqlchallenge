@@ -40,23 +40,32 @@ order by cte.runner_id
 #Query 3
 --Is there any relationship between the number of pizzas and how long the order takes to prepare?
 
+with ctediners as (
+select cu.order_time, r.order_id, r.pickup_time, r.cancellation
+from runner_orders as r
+inner join customer_orders as cu
+on cu.order_id = r.order_id
+)
+select cte.order_id, count(*) as pizza_delivered,
+extract(minutes from avg(cast(cte.pickup_time as timestamp) - cast(cte.order_time as timestamp))) as timetopreparepizza
+from ctediners as cte
+group by cte.order_id 
+order by pizza_delivered
 
+| order_id | pizza_delivered  | timetopreparepizza |
+| -------- | ---------------- | ---------------    |
+| 8        | 1                | 20                 |
+| 7        | 1                | 10                 |
+| 1        | 1                | 10                 |
+| 9        | 1                | Null               |
+| 5        | 1                | 10                 |
+| 6        | 1                | Null               |
+| 2        | 1                | 10                 |
+| 3        | 2                | 21                 |
+| 10       | 2                | 15                 |
+| 4        | 3                | 29                 |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-------
 
 #Query 4
 --What was the average distance travelled for each customer?
@@ -84,35 +93,49 @@ order by cte.customer_id
 
 #Query 5
 --What was the difference between the longest and shortest delivery times for all orders?
+select (max(cast(duration as decimal))- min(cast(duration as decimal))) as difference
+from runner_orders
 
+| difference |
+| ---------- |
+| 30         |
 
-
-
-
-
-
-
-
-
-
-
-
+--------
 
 #Query 6
 --What was the average speed for each runner for each delivery and do you notice any trend for these values?
-select runner_id, order_id, round(avg(cast(distance as decimal)/cast(duration as decimal)),2) as speed
+select runner_id, order_id, round(avg((cast(distance as decimal)/cast(duration as decimal)*60)),2) as speed
 from runner_orders
 where cancellation is null
 group by runner_id, order_id
 order by runner_id, order_id
 
+
 | runner_id | order_id | speed  |
 ---------------------------------
-| 1         | 1        | 0.63   |
-| 1         | 2        | 0.74   |
-| 1         | 3        | 0.67   |
-| 1         | 10       | 1.00   |
-| 2         | 4        | 0.59   |
-| 2         | 7        | 1.00   |
-| 2         | 8        | 1.56   |
-| 3         | 5        | 0.67   |
+| 1         | 1        | 37.50  |
+| 1         | 2        | 44.44  |
+| 1         | 3        | 40.20  |
+| 1         | 10       | 60.00  |
+| 2         | 4        | 35.10  |
+| 2         | 7        | 60.00  |
+| 2         | 8        | 93.60  |
+| 3         | 5        | 40.00  |
+
+---------
+
+#Query 7
+--What is the successful delivery percentage for each runner?
+SELECT runner_id, 
+(100 * sum(case when cancellation is not null then 0 else 1 end) / count(*)) as percentage
+from runner_orders
+group by runner_id
+order by runner_id
+
+| runner_id | percentage      |
+-------------------------------
+| 1         | 100.00          |
+| 2         | 75.00           |
+| 3         | 50.00           |
+
+---------
