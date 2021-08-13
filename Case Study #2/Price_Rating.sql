@@ -1,6 +1,7 @@
 /*Price and Rating*/
 
 --If a Meat Lovers pizza costs $12 and Vegetarian costs $10 and there were no charges for changes - how much money has Pizza Runner made so far if there are no delivery fees?
+
 select 
 sum(case when pizza_id = 1 then 12 else 10 
     case when extras = ) as earnings
@@ -13,6 +14,7 @@ from customer_orders
 -------
 
 --What if there was an additional $1 charge for any pizza extras? Add cheese is $1 extra
+
 select
 sum(case when pizza_id = 1 then 12 else 10 end) +
 sum(case when extras is not null then 1 else 0 end) as earnings
@@ -41,9 +43,9 @@ values
 	('102', '3','1',5),
 	('103','4','1',4),
 	('104', '5' ,'3', 3),
-    ('105', '7' ,'2', 5),
-    ('102','8', '2', 4),
-    ('104', '10', '1', 4);
+        ('105', '7' ,'2', 5),
+        ('102','8', '2', 4),
+        ('104', '10', '1', 4);
 
 select * from rating
 
