@@ -61,3 +61,7 @@ select * from rating
 | 104         | 10       | 1         | 4      |
 
 
+---------
+
+--Using your newly generated table - can you join all of the information together to form a table which has the following information for successful deliveries?
+
