@@ -61,7 +61,8 @@ case
      end as distance_km,
 case 
 	 when duration like 'null' then NULL
-     when duration like '%minutes' then trim( trailing 'minutes' from duration)
+         when duration like '%minutes' then trim( trailing 'minutes' from duration)
+	 when duration like '%min' then trim(trailing 'min' from duration)
 	 else duration 
      end as duration_minutes
 from runner_orders);
