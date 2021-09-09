@@ -48,6 +48,22 @@ group by extract(year from start_date), plan_name, plan_id
 | 3	    | "pro annual"	  | 2021  |	  63   |
 | 2	    | "pro monthly"	  | 2021  |	  60   |
 
+--------
+
+--What is the customer count and percentage of customers who have churned rounded to 1 decimal place?
+
+select round(100*sum(case when plan_id = 4 then 1 end)/count(distinct customer_id),1) as percentage,
+count(case when plan_id = 4 then 1 end) as total
+from subscriptions
+
+| percentage | Total |
+----------------------
+|  30.0      | 307   |
+
+---------
+
+--
+
 
 
 
