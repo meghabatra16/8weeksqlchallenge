@@ -11,6 +11,7 @@ from foodiee
 -------
 
 --2.What is the monthly distribution of trial plan start_date values for our dataset - use the start of the month as the group by value
+
 select extract(month from start_date) as Months_2020, count(plan_id)
 from foodiee
 where plan_id = 0
@@ -35,8 +36,17 @@ group by extract(month from start_date)
 
 --What plan start_date values occur after the year 2020 for our dataset? Show the breakdown by count of events for each plan_name
 
+select plan_id, plan_name, extract(year from start_date) as year, count(plan_name)
+from foodiee
+where extract(year from start_date) = 2021
+group by extract(year from start_date), plan_name, plan_id
 
-
+|plan_id| Plan_name.      | year  | count  |
+--------------------------------------------
+| 1     |	"basic monthly"	| 2021  | 	8    |
+| 4	    | "churn".        |	2021  | 	71   |
+| 3	    | "pro annual"	  | 2021  |	  63   |
+| 2	    | "pro monthly"	  | 2021  |	  60   |
 
 
 
