@@ -80,6 +80,40 @@ group by extract(year from start_date)
 ---------
 
 
+--How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+
+drop table if exists days;
+create temp table days as (
+select 
+	start_date as day1, customer_id, plan_id
+	from subscriptions
+	where plan_id = 0
+);
+
+drop table if exists dayss;
+create temp table dayss as(
+select 
+	start_date as day2, customer_id, plan_id
+	from subscriptions
+	where plan_id = 3
+);
+
+With ctefoodiee as (
+select s.day1, su.day2, s.customer_id 
+from days as s
+inner join dayss as su
+on s.customer_id = su.customer_id
+)
+SELECT Avg(DATE_PART('day', day2::timestamp - day1::timestamp)) as average
+from ctefoodiee 
+
+---------
+
+--Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)?
+
+
+
+
 
 
 
