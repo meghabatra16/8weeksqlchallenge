@@ -60,11 +60,24 @@ from subscriptions
 ----------------------
 |  30.0      | 307   |
 
+
 ---------
 
---
+
+--How many customers have upgraded to an annual plan in 2020?
+
+select extract(year from start_date) as years, count(customer_id) 
+from foodiee 
+where plan_id = 3 and extract(year from start_date) = 2020
+group by extract(year from start_date)
 
 
+| years      | count |
+----------------------
+|  2020      | 195   |
+
+
+---------
 
 
 
